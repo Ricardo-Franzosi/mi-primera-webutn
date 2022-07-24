@@ -28,7 +28,8 @@ body{
 
 .container{
     display: flex;
-    flex-direction: column;   
+    flex-direction: column; 
+  
     justify-content: space-between;  
     background-color: rgb(136, 109, 226);    
     gap:15px;
@@ -36,6 +37,7 @@ body{
 }
 
 .headerP1{   
+    
     margin: .5rem;
     display: flex ;
     flex-direction: column;   
@@ -45,7 +47,8 @@ body{
     background-color: rgb(224, 227, 211);
 
 }
-.lu{   display: flex;
+.lu{   
+    display: flex;
     margin: .5rem;
     justify-content: space-between;
    
@@ -69,6 +72,7 @@ body{
     }
 
 .mainconteiner{
+    
     display: flex;
     margin: .5rem;
     border: 2px solid;
@@ -87,7 +91,7 @@ body{
     font-size: 2rem;
 }
 
-.art1 {
+.art1{
     background-color: white;
     margin: .5rem;
     font-size: 1em;
@@ -109,7 +113,7 @@ body{
     color: black;
   
 }
-.art2 {
+.art2{
     margin: .5rem;
     background-color: white;
     border: 1px solid;
@@ -118,7 +122,7 @@ body{
     column-count:2;
     column-fill: auto;
 }
-.art3 {
+.art3{
     margin: 0.5em;
     font-size: 1em;
     border: 1px solid;
@@ -129,8 +133,7 @@ body{
     column-fill: auto;
 }
 
-/*azul*/
-.aside0 {
+.aside0{
     margin: .5rem;
     display: flex ;
     flex-direction: column;
@@ -145,6 +148,7 @@ body{
     border: 1px solid;
   
  }
+
 .aside3 {   
     margin: .5rem;
     border: 1px solid;
@@ -153,6 +157,7 @@ body{
     color: black;
    align-self: center;
 }
+
 footer {
     width: 100%;
     height: 10vh;
@@ -161,35 +166,38 @@ footer {
     display: flex;
    justify-content: center;
     align-items: center ;
-    font-size: 15px;
-  
+    font-size: 15px;  
   }
     
   h2 {
     text-align: center;
   }
+
   .video{
    display: flex;
    flex-direction: column;
-    justify-content: space-between;
-   
+    background-color: brown;
+    size:10vh;
     margin-left: 2rem;
     margin-right: 2rem;
     margin-top: .5rem;
     margin-bottom: 1rem;
   }
-  iframe{
-    align-self: center;
-    justify-self: center;
-    
-  }
-/*
-  @media screen and (min-width:577px) and (max-width:768px) 
-{
-   flex-direction:-ms-fullscreen ;
- }
- @media screen and  (max-width:576px)
- .video{
-    small
 
- }
+  iframe{
+    size-adjust: 60%;
+    align-self: center;
+    justify-self: center;    
+  }
+
+  @media screen and (min-width:577px) and (max-width:768px) {
+    .aside0 {
+        background-color: red;}
+    }
+  
+
+ @media screen and  (max-width:576px) {
+    .aside0 {
+        background-color: green;}
+    }
+   
