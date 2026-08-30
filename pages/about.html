@@ -4,23 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Sobre Ricardo Franzosi, autor de la bitácora Francho y el Atlantis.">
+  <meta name="theme-color" content="#0b3440">
   <title>Sobre mí · Francho y el Atlantis</title>
   <link rel="stylesheet" href="../css/styles.css">
-  <link rel="icon" href="../assest/WDIC8069 - copia.ico">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 </head>
 <body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="brand" href="../index.html">Francho y el Atlantis</a>
+      <a class="brand" href="../index.html" aria-label="Francho y el Atlantis, inicio">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span>Francho y el Atlantis</span>
+      </a>
       <nav class="nav" aria-label="Navegación principal">
         <a href="../index.html">Inicio</a>
         <a href="./about.html" aria-current="page">Sobre mí</a>
-        <a href="./Contact.html">Contacto</a>
+        <a href="./contact.html">Contacto</a>
       </nav>
     </div>
   </header>
 
-  <main class="shell">
+  <main class="shell" id="contenido">
     <section class="page-hero">
       <p class="eyebrow">Sobre mí</p>
       <h1>Ricardo Franzosi</h1>
@@ -29,11 +35,13 @@
 
     <section class="card prose page-card">
       <div class="profile-grid">
-        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgQA163j1yKkdGoR-5A2mABTe8Iw4rHXhdzWE-D4pvWwfNuQmg-jm59yRLjgQwslpzscI7dOwMFn0hjKgfNcvAoSvSqoYiNvmEtLcPI5sEd-OLMSiToSF0dzxaNcDgY_uT31kIj9N0IFk4ztyO2N2ioQRBU9wH_vFUSwy11dDXoTkIW8YLw520RDTTm=s320" alt="Ricardo Franzosi a bordo del Atlantis">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgQA163j1yKkdGoR-5A2mABTe8Iw4rHXhdzWE-D4pvWwfNuQmg-jm59yRLjgQwslpzscI7dOwMFn0hjKgfNcvAoSvSqoYiNvmEtLcPI5sEd-OLMSiToSF0dzxaNcDgY_uT31kIj9N0IFk4ztyO2N2ioQRBU9wH_vFUSwy11dDXoTkIW8YLw520RDTTm=s320" alt="Ricardo Franzosi a bordo del Atlantis" width="320" height="320" decoding="async">
         <div>
+          <p class="eyebrow">El autor</p>
           <h2>Entre la medicina, el mar y la tecnología</h2>
-          <p>Esta web nació como proyecto de aprendizaje y, al mismo tiempo, como una forma de registrar una aventura muy personal: la preparación y navegación del Atlantis hacia el Fin del Mundo.</p>
-          <p>El proyecto combina dos intereses que parecen lejanos pero que comparten bastante: aprender haciendo y resolver problemas concretos. El mar aporta las historias; el desarrollo web, una forma de contarlas.</p>
+          <p>Esta web nació como un proyecto de aprendizaje y, al mismo tiempo, como una forma de registrar una aventura muy personal: la preparación y navegación del Atlantis hacia el Fin del Mundo.</p>
+          <p>El proyecto combina intereses que parecen lejanos pero que comparten bastante: aprender haciendo, resolver problemas concretos y dejar registro de una experiencia. El mar aporta las historias; el desarrollo web, una forma de contarlas.</p>
+          <p class="mini-note">La primera versión fue desarrollada como práctica de HTML y CSS para UTN. Esta edición conserva ese origen y actualiza su estructura, diseño y accesibilidad.</p>
         </div>
       </div>
     </section>
@@ -41,8 +49,14 @@
 
   <footer class="site-footer">
     <div class="shell footer-inner">
-      <p>Francho y el Atlantis · Bitácora personal de navegación</p>
-      <a href="../index.html">Volver al inicio</a>
+      <div>
+        <strong>Francho y el Atlantis</strong>
+        <p>Bitácora personal de navegación.</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">Inicio</a>
+        <a href="./contact.html">Contacto</a>
+      </div>
     </div>
   </footer>
 </body>
