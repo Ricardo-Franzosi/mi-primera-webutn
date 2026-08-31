@@ -1,25 +1,23 @@
 # Francho y el Atlantis
 
-Sitio web estático desarrollado originalmente como práctica de HTML y CSS para UTN. Funciona como una bitácora personal de la preparación y navegación del velero **Atlantis** hacia el Fin del Mundo.
+Sitio web estático desarrollado originalmente como práctica de HTML y CSS para UTN y convertido progresivamente en una **bitácora digital de navegación** sobre el velero **Atlantis**, su tripulación, los preparativos y la expedición al Fin del Mundo.
 
 ## Estado actual
 
-La versión 2026 moderniza el proyecto original sin cambiar su identidad ni convertirlo en una aplicación innecesariamente compleja.
+La versión 2026 conserva la sencillez del proyecto —HTML y CSS, sin frameworks ni JavaScript innecesario— y mejora presentación, accesibilidad y contenido visual.
 
 ### Mejoras incorporadas
 
-- HTML5 semántico y válido.
-- Navegación consistente entre páginas.
+- HTML5 semántico y navegación consistente.
 - Diseño responsive para escritorio, tablet y celular.
-- Mejor jerarquía visual, legibilidad y contraste.
-- Accesibilidad mejorada con navegación por teclado, foco visible y enlace para saltar al contenido.
+- Estética inspirada en una bitácora náutica: papel, azul marino y detalles cálidos.
+- Accesibilidad: navegación por teclado, foco visible y enlace para saltar al contenido.
 - Metadatos básicos para SEO y vista previa social.
-- Imágenes dimensionadas y carga diferida donde corresponde.
-- YouTube con dominio `youtube-nocookie.com`.
-- Sin dependencias JavaScript ni framework.
-- Sin carga externa de fuentes.
+- Página **Galería** integrada al menú principal.
+- Seis fotografías propias optimizadas y almacenadas localmente en `assets/images/`.
+- YouTube mediante `youtube-nocookie.com`.
 - Favicon SVG liviano.
-- Workflow preparado para desplegar automáticamente en GitHub Pages desde `main`.
+- Despliegue automático mediante GitHub Pages.
 
 ## Estructura
 
@@ -27,14 +25,21 @@ La versión 2026 moderniza el proyecto original sin cambiar su identidad ni conv
 mi-primera-webutn/
 ├── .github/
 │   └── workflows/
-│       └── pages.yml
 ├── assets/
-│   └── favicon.svg
+│   ├── favicon.svg
+│   └── images/
+│       ├── atlantis-navegando.jpg
+│       ├── brindis-a-bordo.jpg
+│       ├── perfil-atlantis.jpg
+│       ├── provisiones-muelle.jpg
+│       ├── tripulacion-bandera.jpg
+│       └── tripulacion-cubierta.jpg
 ├── css/
 │   └── styles.css
 ├── pages/
 │   ├── about.html
-│   └── contact.html
+│   ├── contact.html
+│   └── gallery.html
 ├── index.html
 └── README.md
 ```
@@ -47,29 +52,27 @@ mi-primera-webutn/
 - GitHub Pages
 - YouTube Embed
 
-No requiere instalación, compilación ni dependencias. Para verlo localmente basta con abrir `index.html` en un navegador moderno.
+No requiere instalación ni compilación. Para verlo localmente basta con abrir `index.html` en un navegador moderno.
 
 ## Publicación
 
-El archivo `.github/workflows/pages.yml` está preparado para desplegar el sitio cuando hay cambios en la rama `main`.
+Los cambios incorporados a `main` se despliegan automáticamente mediante GitHub Pages.
 
-En GitHub, la fuente de publicación debe configurarse una vez en:
-
-**Settings → Pages → Build and deployment → Source → GitHub Actions**
-
-Después de esa configuración, cada actualización de `main` dispara automáticamente el despliegue.
-
-La URL esperada del proyecto es:
+Sitio público:
 
 `https://ricardo-franzosi.github.io/mi-primera-webutn/`
 
+Galería:
+
+`https://ricardo-franzosi.github.io/mi-primera-webutn/pages/gallery.html`
+
 ## Próximas mejoras posibles
 
-- Incorporar nuevos capítulos o entradas de la expedición.
-- Guardar localmente fotografías actualmente servidas desde Blogger.
-- Agregar una galería fotográfica optimizada.
-- Incorporar fechas, lugares y una línea temporal de la navegación.
-- Añadir un formulario de contacto sólo si realmente resulta necesario.
+- Organizar la bitácora en capítulos cronológicos.
+- Agregar fechas y lugares reales a las fotografías.
+- Crear galerías temáticas: tripulación, barco, navegación, escalas y paisajes.
+- Incorporar un mapa o línea temporal de la travesía.
+- Sustituir progresivamente cualquier imagen externa restante por archivos locales.
 
 ## Autor
 
