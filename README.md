@@ -1,6 +1,8 @@
-# Francho y el Atlantis
+# Atlantis · Fin del Mundo
 
 Sitio web estático desarrollado originalmente como práctica de HTML y CSS para UTN y convertido progresivamente en una **bitácora digital de navegación** sobre el velero **Atlantis**, su tripulación, los preparativos y la expedición al Fin del Mundo y la Antártida.
+
+El proyecto evoluciona hacia un archivo colectivo del viaje, manteniendo la bitácora cronológica original y dejando abierta la incorporación de relatos propios de otros integrantes de la tripulación.
 
 ## Estado actual
 
@@ -26,7 +28,7 @@ La versión 2026 conserva HTML y CSS sin frameworks innecesarios, pero incorpora
 ## Estructura principal
 
 ```text
-mi-primera-webutn/
+atlantis-fin-del-mundo/
 ├── .github/workflows/
 ├── assets/images/
 ├── css/
@@ -53,8 +55,8 @@ Los cambios incorporados a `main` se despliegan mediante GitHub Pages.
 
 Sitio público:
 
-`https://ricardo-franzosi.github.io/mi-primera-webutn/`
+`https://ricardo-franzosi.github.io/atlantis-fin-del-mundo/`
 
 Bitácora:
 
-`https://ricardo-franzosi.github.io/mi-primera-webutn/pages/bitacora/`
+`https://ricardo-franzosi.github.io/atlantis-fin-del-mundo/pages/bitacora/`
