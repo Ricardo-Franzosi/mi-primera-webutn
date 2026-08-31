@@ -46,34 +46,42 @@ PHOTO_ASSOCIATIONS = {
     ),
 }
 
+JOURNEY_SECTION = '''
+<section class="journey-overview shell" aria-labelledby="ruta-viaje">
+  <div class="journey-heading"><div><p class="eyebrow">Un viaje, cinco etapas</p><h2 id="ruta-viaje">De Buenos Aires a la Antártida</h2></div><p>Los textos escritos durante la travesía ahora forman una bitácora cronológica. Cada etapa reúne relatos, fotografías y la publicación original de Blogger.</p></div>
+  <div class="journey-cards">
+    <a class="journey-card" href="./pages/bitacora/index.html"><span>01</span><strong>Preparativos</strong><small>La previa, la despedida y todo lo que hizo posible zarpar.</small></a>
+    <a class="journey-card" href="./pages/bitacora/salida-a-mar-del-plata.html"><span>02</span><strong>Rumbo al Sur</strong><small>Mar del Plata, Rawson y las primeras decisiones de una navegación larga.</small></a>
+    <a class="journey-card" href="./pages/bitacora/caleta-hornos.html"><span>03</span><strong>Patagonia Austral</strong><small>Caleta Hornos, Golfo San Jorge, Puerto Deseado y San Julián.</small></a>
+    <a class="journey-card" href="./pages/bitacora/ushuaia.html"><span>04</span><strong>Fin del Mundo</strong><small>Ushuaia y los últimos preparativos antes del Drake.</small></a>
+    <a class="journey-card journey-card-featured" href="./pages/bitacora/antartida/index.html"><span>05</span><strong>Antártida</strong><small>Drake, Isla Decepción, Gerlache, Bahía Paraíso y las Islas Melchior.</small></a>
+  </div>
+</section>
+'''
+
+VIDEO_SECTION = '''    <section class="shell video-section" aria-labelledby="video-title">
+      <div class="section-heading video-heading">
+        <div><p class="eyebrow">Puerto San Julián · Club Náutico El Delfín</p><h2 id="video-title">Entrevista durante el regreso</h2></div>
+        <p>Ya de regreso hacia Buenos Aires, una entrevista realizada en el Club Náutico El Delfín, en Puerto San Julián.</p>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/JwJmkC_hYUY" title="Entrevista durante el regreso en el Club Náutico El Delfín de Puerto San Julián" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>'''
+
 
 def enrich_timeline():
     path = ROOT / "pages" / "bitacora" / "index.html"
     text = path.read_text(encoding="utf-8")
     for slug, description in DESCRIPTIONS.items():
-        pattern = re.compile(
-            rf'(<article class="timeline-card">.*?<a href="\./{re.escape(slug)}\.html">)',
-            re.S,
-        )
+        pattern = re.compile(rf'(<article class="timeline-card">.*?<a href="\./{re.escape(slug)}\.html">)', re.S)
         match = pattern.search(text)
         if not match:
             continue
-        card = match.group(1)
-        card = card.replace(
-            '<p>Relato original escrito durante la travesía.</p>',
-            f'<p>{description}</p>',
-            1,
-        )
+        card = match.group(1).replace('<p>Relato original escrito durante la travesía.</p>', f'<p>{description}</p>', 1)
         text = text[:match.start(1)] + card + text[match.end(1):]
-    text = text.replace(
-        '<a href="./drake-antartida-y-60-rugientes.html">Leer capítulo →</a>',
-        '<a href="./antartida/index.html">Explorar etapa antártica →</a>',
-    )
-    text = text.replace(
-        '<p>Relato original escrito durante la travesía.</p><a href="./antartida/index.html">',
-        '<p>El diario completo de la expedición antártica, organizado en cinco capítulos para recorrer el Drake, los fondeos y el regreso.</p><a href="./antartida/index.html">',
-        1,
-    )
+    text = text.replace('<a href="./drake-antartida-y-60-rugientes.html">Leer capítulo →</a>', '<a href="./antartida/index.html">Explorar etapa antártica →</a>')
+    text = text.replace('<p>Relato original escrito durante la travesía.</p><a href="./antartida/index.html">', '<p>El diario completo de la expedición antártica, organizado en cinco capítulos para recorrer el Drake, los fondeos y el regreso.</p><a href="./antartida/index.html">', 1)
     path.write_text(text, encoding="utf-8")
 
 
@@ -104,8 +112,7 @@ def insert_chapter_photos():
         if 'class="chapter-photo context-photo"' in text:
             text = re.sub(r'<figure class="chapter-photo context-photo">.*?</figure>', block, text, count=1, flags=re.S)
         else:
-            marker = '<footer class="journal-source">'
-            text = text.replace(marker, block + marker, 1)
+            text = text.replace('<footer class="journal-source">', block + '<footer class="journal-source">', 1)
         path.write_text(text, encoding="utf-8")
 
 
@@ -115,24 +122,12 @@ def enrich_home():
     text = text.replace('href="./pages/gallery.html" class="button">Ver la galería</a>', 'href="./pages/bitacora/index.html" class="button">Leer la bitácora</a>')
     text = text.replace('href="#historia">Leer la historia</a>', 'href="./pages/bitacora/index.html">Leer la bitácora</a>')
 
-    if 'class="journey-overview"' not in text:
-        section = '''
-<section class="journey-overview shell" aria-labelledby="ruta-viaje">
-  <div class="journey-heading"><div><p class="eyebrow">Un viaje, cinco etapas</p><h2 id="ruta-viaje">De Buenos Aires a la Antártida</h2></div><p>Los textos escritos durante la travesía ahora forman una bitácora cronológica. Cada etapa reúne relatos, fotografías y la publicación original de Blogger.</p></div>
-  <div class="journey-cards">
-    <a class="journey-card" href="./pages/bitacora/index.html"><span>01</span><strong>Preparativos</strong><small>La previa, la despedida y todo lo que hizo posible zarpar.</small></a>
-    <a class="journey-card" href="./pages/bitacora/salida-a-mar-del-plata.html"><span>02</span><strong>Rumbo al Sur</strong><small>Mar del Plata, Rawson y las primeras decisiones de una navegación larga.</small></a>
-    <a class="journey-card" href="./pages/bitacora/caleta-hornos.html"><span>03</span><strong>Patagonia Austral</strong><small>Caleta Hornos, Golfo San Jorge, Puerto Deseado y San Julián.</small></a>
-    <a class="journey-card" href="./pages/bitacora/ushuaia.html"><span>04</span><strong>Fin del Mundo</strong><small>Ushuaia y los últimos preparativos antes del Drake.</small></a>
-    <a class="journey-card journey-card-featured" href="./pages/bitacora/antartida/index.html"><span>05</span><strong>Antártida</strong><small>Drake, Isla Decepción, Gerlache, Bahía Paraíso y las Islas Melchior.</small></a>
-  </div>
-</section>
-'''
-        anchor = '<section class="video-section">'
-        if anchor in text:
-            text = text.replace(anchor, section + anchor, 1)
-        else:
-            text = text.replace('</main>', section + '</main>', 1)
+    # Replace the mislabeled video block with the verified context supplied by the author.
+    text = re.sub(r'\s*<section class="shell video-section" aria-labelledby="video-title">.*?</section>', '\n' + VIDEO_SECTION, text, count=1, flags=re.S)
+
+    # Remove any previously generated copies, then insert exactly one journey overview.
+    text = re.sub(r'\s*<section class="journey-overview shell" aria-labelledby="ruta-viaje">.*?</section>', '', text, flags=re.S)
+    text = text.replace('</main>', JOURNEY_SECTION + '\n</main>', 1)
     path.write_text(text, encoding="utf-8")
 
 
