@@ -13,6 +13,7 @@ La versión 2026 conserva HTML y CSS sin frameworks innecesarios, pero incorpora
 - Estética inspirada en una bitácora náutica.
 - Accesibilidad básica: navegación por teclado, foco visible y enlace para saltar al contenido.
 - **16 entradas originales de Blogger** organizadas cronológicamente por etapas.
+- Fechas en castellano, capítulos numerados y navegación anterior/siguiente reforzada.
 - Etapa antártica dividida editorialmente en cinco capítulos navegables.
 - Páginas independientes de **Tripulación** y **El Atlantis**.
 - Galería de fotografías propias y fotografías contextuales dentro de los capítulos.
@@ -57,18 +58,3 @@ Sitio público:
 Bitácora:
 
 `https://ricardo-franzosi.github.io/mi-primera-webutn/pages/bitacora/`
-
-Galería:
-
-`https://ricardo-franzosi.github.io/mi-primera-webutn/pages/gallery.html`
-
-## Próximas etapas
-
-- Incorporar nuevas fotografías y videos del archivo del viaje.
-- Completar la historia técnica del Atlantis.
-- Agregar un mapa o línea temporal geográfica de la travesía.
-- Revisar progresivamente el material disponible en otras fuentes públicas del proyecto.
-
-## Autor
-
-Ricardo Franzosi
