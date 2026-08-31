@@ -31,8 +31,8 @@ PHOTO_ASSOCIATIONS = {
     ),
     "la-despedida.html": (
         "../../assets/images/brindis-a-bordo.jpg",
-        "La previa a bordo",
-        "Un brindis entre amigos en los días previos a la partida.",
+        "Brindis a bordo en Mar del Plata",
+        "Un brindis entre amigos a bordo del Atlantis durante la escala en Mar del Plata.",
     ),
     "la-tripulacion.html": (
         "../../assets/images/tripulacion-cubierta.jpg",
@@ -88,21 +88,25 @@ def insert_chapter_photos():
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8")
+        block = photo_block(src, title, caption)
         if 'class="chapter-photo context-photo"' in text:
-            continue
-        marker = '<footer class="journal-source">'
-        if marker in text:
-            text = text.replace(marker, photo_block(src, title, caption) + marker, 1)
-            path.write_text(text, encoding="utf-8")
+            text = re.sub(r'<figure class="chapter-photo context-photo">.*?</figure>', block, text, count=1, flags=re.S)
+        else:
+            marker = '<footer class="journal-source">'
+            if marker in text:
+                text = text.replace(marker, block + marker, 1)
+        path.write_text(text, encoding="utf-8")
 
     path = ROOT / "pages" / "tripulacion.html"
     if path.exists():
         text = path.read_text(encoding="utf-8")
-        if 'class="chapter-photo context-photo"' not in text:
+        block = photo_block('../assets/images/tripulacion-cubierta.jpg', 'Tripulación sobre cubierta', 'Parte del grupo reunido a bordo del Atlantis.')
+        if 'class="chapter-photo context-photo"' in text:
+            text = re.sub(r'<figure class="chapter-photo context-photo">.*?</figure>', block, text, count=1, flags=re.S)
+        else:
             marker = '<footer class="journal-source">'
-            block = photo_block('../assets/images/tripulacion-cubierta.jpg', 'Tripulación sobre cubierta', 'Parte del grupo reunido a bordo del Atlantis.')
             text = text.replace(marker, block + marker, 1)
-            path.write_text(text, encoding="utf-8")
+        path.write_text(text, encoding="utf-8")
 
 
 def enrich_home():
