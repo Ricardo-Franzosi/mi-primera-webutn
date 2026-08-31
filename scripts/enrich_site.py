@@ -67,7 +67,12 @@ def enrich_timeline():
         text = text[:match.start(1)] + card + text[match.end(1):]
     text = text.replace(
         '<a href="./drake-antartida-y-60-rugientes.html">Leer capítulo →</a>',
-        '<a href="./antartida/index.html">Explorar la etapa antártica →</a>',
+        '<a href="./antartida/index.html">Explorar etapa antártica →</a>',
+    )
+    text = text.replace(
+        '<p>Relato original escrito durante la travesía.</p><a href="./antartida/index.html">',
+        '<p>El diario completo de la expedición antártica, organizado en cinco capítulos para recorrer el Drake, los fondeos y el regreso.</p><a href="./antartida/index.html">',
+        1,
     )
     path.write_text(text, encoding="utf-8")
 
@@ -90,7 +95,6 @@ def insert_chapter_photos():
             text = text.replace(marker, photo_block(src, title, caption) + marker, 1)
             path.write_text(text, encoding="utf-8")
 
-    # The standalone crew page reuses the same verified crew image.
     path = ROOT / "pages" / "tripulacion.html"
     if path.exists():
         text = path.read_text(encoding="utf-8")
@@ -104,7 +108,6 @@ def insert_chapter_photos():
 def enrich_home():
     path = ROOT / "index.html"
     text = path.read_text(encoding="utf-8")
-    # Make the primary CTA narrative rather than purely photographic.
     text = text.replace('href="./pages/gallery.html" class="button">Ver la galería</a>', 'href="./pages/bitacora/index.html" class="button">Leer la bitácora</a>')
     text = text.replace('href="#historia">Leer la historia</a>', 'href="./pages/bitacora/index.html">Leer la bitácora</a>')
 
@@ -114,8 +117,8 @@ def enrich_home():
   <div class="journey-heading"><div><p class="eyebrow">Un viaje, cinco etapas</p><h2 id="ruta-viaje">De Buenos Aires a la Antártida</h2></div><p>Los textos escritos durante la travesía ahora forman una bitácora cronológica. Cada etapa reúne relatos, fotografías y la publicación original de Blogger.</p></div>
   <div class="journey-cards">
     <a class="journey-card" href="./pages/bitacora/index.html"><span>01</span><strong>Preparativos</strong><small>La previa, la despedida y todo lo que hizo posible zarpar.</small></a>
-    <a class="journey-card" href="./pages/bitacora/index.html"><span>02</span><strong>Rumbo al Sur</strong><small>Mar del Plata, Rawson y las primeras decisiones de una navegación larga.</small></a>
-    <a class="journey-card" href="./pages/bitacora/index.html"><span>03</span><strong>Patagonia Austral</strong><small>Caleta Hornos, Golfo San Jorge, Puerto Deseado y San Julián.</small></a>
+    <a class="journey-card" href="./pages/bitacora/salida-a-mar-del-plata.html"><span>02</span><strong>Rumbo al Sur</strong><small>Mar del Plata, Rawson y las primeras decisiones de una navegación larga.</small></a>
+    <a class="journey-card" href="./pages/bitacora/caleta-hornos.html"><span>03</span><strong>Patagonia Austral</strong><small>Caleta Hornos, Golfo San Jorge, Puerto Deseado y San Julián.</small></a>
     <a class="journey-card" href="./pages/bitacora/ushuaia.html"><span>04</span><strong>Fin del Mundo</strong><small>Ushuaia y los últimos preparativos antes del Drake.</small></a>
     <a class="journey-card journey-card-featured" href="./pages/bitacora/antartida/index.html"><span>05</span><strong>Antártida</strong><small>Drake, Isla Decepción, Gerlache, Bahía Paraíso y las Islas Melchior.</small></a>
   </div>
