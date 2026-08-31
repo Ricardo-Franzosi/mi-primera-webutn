@@ -21,12 +21,23 @@ GROUPS = [
     ("Fin del Mundo", range(14,15)),
     ("Antártida", range(15,16)),
 ]
+MONTHS = {
+    1:"enero",2:"febrero",3:"marzo",4:"abril",5:"mayo",6:"junio",
+    7:"julio",8:"agosto",9:"septiembre",10:"octubre",11:"noviembre",12:"diciembre"
+}
 
 def alternate(entry):
     for link in entry.get("link", []):
         if link.get("rel") == "alternate":
             return link.get("href", "#")
     return "#"
+
+def display_date(value):
+    try:
+        year, month, day = (int(x) for x in value[:10].split("-"))
+        return f"{day} de {MONTHS[month]} de {year}"
+    except Exception:
+        return value
 
 def clean_content(raw):
     """Limpia sólo marcado heredado; conserva las palabras del relato."""
@@ -94,10 +105,14 @@ def post_page(post, idx, posts):
     n = []
     if prev:
         n.append(f'<a href="./{prev["slug"]}.html"><span>← Anterior</span><strong>{esc(prev["title"])}</strong></a>')
+    else:
+        n.append('<a href="./index.html"><span>← Índice</span><strong>Bitácora completa</strong></a>')
     if nxt:
         n.append(f'<a href="./{nxt["slug"]}.html"><span>Siguiente →</span><strong>{esc(nxt["title"])}</strong></a>')
+    else:
+        n.append('<a href="./antartida/index.html"><span>Etapa antártica →</span><strong>Recorrer los cinco capítulos</strong></a>')
     body = f'''<main class="shell" id="contenido">
-<section class="page-hero chapter-hero"><p class="eyebrow">Bitácora original · {post["date"]}</p><h1>{esc(post["title"])}</h1>
+<section class="page-hero chapter-hero"><p class="eyebrow">Capítulo {idx+1:02d} de {len(posts)} · {post["display_date"]}</p><h1>{esc(post["title"])}</h1>
 <p class="lead">Relato escrito durante la travesía y conservado en su redacción original.</p></section>
 <article class="journal-entry card"><div class="journal-entry-body">{post["content"]}</div>
 <footer class="journal-source"><span>Fuente original</span><a href="{esc(post["url"])}" target="_blank" rel="noopener noreferrer">Ver esta entrada en Blogger ↗</a></footer></article>
@@ -106,20 +121,20 @@ def post_page(post, idx, posts):
 
 def timeline_index(posts):
     sections = []
-    for group, idxs in GROUPS:
+    for stage_number, (group, idxs) in enumerate(GROUPS, start=1):
         cards = []
         for i in idxs:
             p = posts[i]
-            cards.append(f'''<article class="timeline-card"><p class="timeline-date">{p["date"]}</p><h3>{esc(p["title"])}</h3>
+            cards.append(f'''<article class="timeline-card"><p class="timeline-date">{p["display_date"]}</p><h3>{esc(p["title"])}</h3>
 <p>Relato original escrito durante la travesía.</p><a href="./{p["slug"]}.html">Leer capítulo →</a></article>''')
-        sections.append(f'''<section class="timeline-stage"><header><p class="eyebrow">Etapa</p><h2>{group}</h2></header><div class="timeline-grid">{''.join(cards)}</div></section>''')
+        sections.append(f'''<section class="timeline-stage"><header><p class="eyebrow">Etapa {stage_number:02d}</p><h2>{group}</h2></header><div class="timeline-grid">{''.join(cards)}</div></section>''')
     body = f'''<main class="shell" id="contenido"><section class="page-hero logbook-hero"><p class="eyebrow">Archivo de viaje · 2021–2022</p><h1>La bitácora completa</h1>
 <p class="lead">Dieciséis relatos escritos durante el viaje, ordenados cronológicamente y reunidos aquí sin neutralizar la voz con la que fueron escritos.</p>
 <div class="logbook-meta"><span>16 entradas originales</span><span>Noviembre 2021 – Enero 2022</span><span>Buenos Aires → Antártida</span></div></section>
 <section class="logbook-note"><p class="eyebrow">Criterio editorial</p><h2>El texto sigue siendo el del viaje</h2>
 <p>La web organiza y presenta los relatos; no los reescribe. Se corrigen únicamente errores objetivos y se conserva un enlace a cada publicación original de Blogger.</p></section>
 {''.join(sections)}
-<section class="route-strip"><p class="eyebrow">Ruta general</p><p>Buenos Aires · Mar del Plata · Rawson · Caleta Hornos · Puerto Deseado · San Julián · Isla de los Estados · Canal Beagle · Ushuaia · Pasaje Drake · Isla Decepción · Gerlache · Bahía Paraíso · Islas Melchior · Canal Murature · regreso por el Drake</p></section></main>'''
+<section class="route-strip"><p class="eyebrow">Ruta general</p><h2>De Buenos Aires al continente blanco</h2><p>Buenos Aires · Mar del Plata · Rawson · Caleta Hornos · Puerto Deseado · San Julián · Isla de los Estados · Canal Beagle · Ushuaia · Pasaje Drake · Isla Decepción · Gerlache · Bahía Paraíso · Islas Melchior · Canal Murature · regreso por el Drake</p></section></main>'''
     return page_shell("Bitácora", "Bitácora cronológica completa del viaje del velero Atlantis.", body)
 
 def tripulacion_page(post):
@@ -157,9 +172,11 @@ def main():
         raise SystemExit(f"Se esperaban 16 entradas y llegaron {len(entries)}")
     posts = []
     for i, e in enumerate(entries):
+        date = e.get("published",{}).get("$t","")[:10]
         posts.append({
             "title": e.get("title",{}).get("$t","").strip(),
-            "date": e.get("published",{}).get("$t","")[:10],
+            "date": date,
+            "display_date": display_date(date),
             "url": alternate(e),
             "slug": SLUGS[i],
             "content": clean_content(e.get("content",{}).get("$t","")),
@@ -179,7 +196,7 @@ def main():
 
     css = r'''
 /* Bitácora cronológica */
-.chapter-hero{max-width:980px;padding-bottom:1.6rem}.journal-entry{max-width:900px;margin:0 auto 2rem;padding:clamp(1.4rem,4vw,3.1rem)}.journal-entry-body{font-family:Georgia,"Times New Roman",serif;font-size:1.06rem;line-height:1.82;color:#263b42}.journal-entry-body p,.journal-entry-body div{margin:0 0 1.05rem}.journal-entry-body img{display:block;max-width:100%;width:auto;height:auto;margin:1.5rem auto;border-radius:16px;box-shadow:var(--shadow-sm)}.journal-entry-body iframe,.journal-entry-body video{display:block;width:100%!important;max-width:100%;height:auto!important;aspect-ratio:16/9;margin:1.5rem auto;border:0;border-radius:14px;overflow:hidden}.journal-entry-body table{display:block;max-width:100%;overflow-x:auto}.journal-entry-body a{color:var(--sea);text-underline-offset:3px}.journal-source{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.7rem;margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.88rem}.journal-source a{color:var(--navy);font-weight:800}.chapter-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;max-width:900px;margin:0 auto 5rem}.chapter-nav a{display:grid;gap:.2rem;padding:1rem 1.15rem;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--paper-2);text-decoration:none}.chapter-nav a span{color:var(--sea);font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em}.chapter-nav a strong{font-family:Georgia,"Times New Roman",serif;color:var(--navy)}.timeline-stage{padding:1.25rem 0 3.3rem}.timeline-stage>header{display:grid;grid-template-columns:.33fr 1fr;gap:1.5rem;align-items:end;margin-bottom:1.25rem;border-bottom:1px solid var(--line);padding-bottom:1rem}.timeline-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.timeline-card{padding:1.35rem;border:1px solid var(--line);border-radius:var(--radius-sm);background:rgba(255,255,255,.72)}.timeline-date{margin-bottom:.55rem;color:var(--rust);font-size:.76rem;font-weight:800;letter-spacing:.1em}.timeline-card h3{font-size:1.3rem}.timeline-card p:not(.timeline-date){margin-top:.7rem;color:var(--ink-soft);font-size:.94rem}.timeline-card a{display:inline-block;margin-top:.9rem;color:var(--navy);font-weight:800}.route-strip{margin:0 0 5rem;padding:1.5rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--ink-soft)}.boat-profile{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(0,1.1fr);gap:2rem;max-width:1000px;margin-bottom:5rem;padding:1.2rem}.boat-profile>img{width:100%;height:100%;min-height:430px;object-fit:cover;border-radius:18px}.boat-profile>div{padding:1rem 1rem 1rem 0}.boat-profile p:not(.eyebrow):not(.mini-note){margin-top:1rem;color:var(--ink-soft)}@media(max-width:900px){.boat-profile,.timeline-stage>header{grid-template-columns:1fr}.boat-profile>img{min-height:0;aspect-ratio:16/10}.boat-profile>div{padding:1rem}.journal-entry-body{font-size:1rem}}@media(max-width:640px){.timeline-grid,.chapter-nav{grid-template-columns:1fr}.journal-entry{padding:1.1rem}.journal-entry-body{font-size:.98rem;line-height:1.74}}
+.chapter-hero{max-width:980px;padding-bottom:1.9rem}.chapter-hero .lead{max-width:760px}.journal-entry{max-width:900px;margin:0 auto 2.2rem;padding:clamp(1.45rem,4vw,3.2rem)}.journal-entry-body{font-family:Georgia,"Times New Roman",serif;font-size:1.08rem;line-height:1.86;color:#263b42;overflow-wrap:anywhere}.journal-entry-body>p,.journal-entry-body>div{margin:0 0 1.18rem}.journal-entry-body img{display:block;max-width:100%;width:auto;height:auto;margin:1.9rem auto;border-radius:16px;box-shadow:var(--shadow-sm)}.journal-entry-body iframe,.journal-entry-body video{display:block;width:100%!important;max-width:100%;height:auto!important;aspect-ratio:16/9;margin:1.9rem auto;border:0;border-radius:14px;overflow:hidden}.journal-entry-body table{display:block;max-width:100%;overflow-x:auto}.journal-entry-body a{color:var(--sea);text-underline-offset:3px}.journal-entry-body b,.journal-entry-body strong{color:var(--navy)}.journal-source{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.7rem;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.88rem}.journal-source a{color:var(--navy);font-weight:800}.chapter-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;max-width:900px;margin:0 auto 5rem}.chapter-nav a{display:grid;align-content:center;gap:.3rem;min-height:96px;padding:1.05rem 1.2rem;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--paper-2);text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}.chapter-nav a:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}.chapter-nav a span{color:var(--sea);font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em}.chapter-nav a strong{font-family:Georgia,"Times New Roman",serif;color:var(--navy);line-height:1.25}.timeline-stage{padding:1.5rem 0 3.6rem}.timeline-stage>header{display:grid;grid-template-columns:.33fr 1fr;gap:1.5rem;align-items:end;margin-bottom:1.35rem;border-bottom:1px solid var(--line);padding-bottom:1rem}.timeline-stage>header .eyebrow{margin-bottom:.15rem}.timeline-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.timeline-card{display:flex;flex-direction:column;padding:1.45rem;border:1px solid var(--line);border-radius:var(--radius-sm);background:rgba(255,255,255,.72)}.timeline-grid>.timeline-card:last-child:nth-child(odd){grid-column:1/-1}.timeline-date{margin-bottom:.6rem;color:var(--rust);font-size:.76rem;font-weight:800;letter-spacing:.06em}.timeline-card h3{font-size:1.34rem;line-height:1.18}.timeline-card p:not(.timeline-date){margin-top:.7rem;color:var(--ink-soft);font-size:.94rem}.timeline-card a{display:inline-block;margin-top:auto;padding-top:1rem;color:var(--navy);font-weight:800}.route-strip{margin:0 0 5rem;padding:1.8rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--ink-soft)}.route-strip h2{margin:.2rem 0 .65rem;color:var(--navy);font-size:clamp(1.45rem,3vw,2rem)}.route-strip p:last-child{line-height:1.75}.boat-profile{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(0,1.1fr);gap:2rem;max-width:1000px;margin-bottom:5rem;padding:1.2rem}.boat-profile>img{width:100%;height:100%;min-height:430px;object-fit:cover;border-radius:18px}.boat-profile>div{padding:1rem 1rem 1rem 0}.boat-profile p:not(.eyebrow):not(.mini-note){margin-top:1rem;color:var(--ink-soft)}@media(max-width:900px){.boat-profile,.timeline-stage>header{grid-template-columns:1fr}.boat-profile>img{min-height:0;aspect-ratio:16/10}.boat-profile>div{padding:1rem}.journal-entry-body{font-size:1.02rem}}@media(max-width:640px){.timeline-grid,.chapter-nav{grid-template-columns:1fr}.timeline-grid>.timeline-card:last-child:nth-child(odd){grid-column:auto}.journal-entry{padding:1.15rem}.journal-entry-body{font-size:1rem;line-height:1.78}.chapter-nav a{min-height:0}}
 '''
     (ROOT/"css"/"bitacora.css").write_text(css.strip()+"\n", encoding="utf-8")
 
