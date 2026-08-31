@@ -1,0 +1,41 @@
+name: Build Atlantis bitacora
+
+on:
+  push:
+    branches: ["bitacora-cronologica"]
+    paths:
+      - "scripts/build_bitacora.py"
+      - "scripts/split_antartida.py"
+      - "scripts/enrich_site.py"
+      - ".github/workflows/build-bitacora.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: bitacora-cronologica
+      - name: Generate bitacora from Blogger
+        run: python scripts/build_bitacora.py
+      - name: Apply verified editorial corrections
+        run: sed -i 's/Saccheri/Casciari/g; s/Sacheri/Casciari/g' pages/bitacora/la-previa.html
+      - name: Split Antarctic stage into readable chapters
+        run: python scripts/split_antartida.py
+      - name: Enrich descriptions, photos and homepage
+        run: python scripts/enrich_site.py
+      - name: Commit generated site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html pages css/bitacora.css
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Enriquece bitácora con fotos y portada narrativa"
+            git push origin HEAD:bitacora-cronologica
+          fi
