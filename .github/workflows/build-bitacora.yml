@@ -2,12 +2,13 @@ name: Build Atlantis bitacora
 
 on:
   push:
-    branches: ["bitacora-cronologica"]
+    branches: ["main"]
     paths:
       - "scripts/build_bitacora.py"
       - "scripts/split_antartida.py"
       - "scripts/enrich_site.py"
       - ".github/workflows/build-bitacora.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -19,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: bitacora-cronologica
+          ref: main
       - name: Generate bitacora from Blogger
         run: python scripts/build_bitacora.py
       - name: Apply verified editorial corrections
@@ -36,6 +37,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Enriquece bitácora con fotos y portada narrativa"
-            git push origin HEAD:bitacora-cronologica
+            git commit -m "Regenera bitácora limpia desde Blogger"
+            git push origin HEAD:main
           fi
