@@ -6,6 +6,7 @@ on:
     paths:
       - "scripts/build_bitacora.py"
       - "scripts/split_antartida.py"
+      - "scripts/enrich_site.py"
       - ".github/workflows/build-bitacora.yml"
 
 permissions:
@@ -25,6 +26,8 @@ jobs:
         run: sed -i 's/Saccheri/Casciari/g; s/Sacheri/Casciari/g' pages/bitacora/la-previa.html
       - name: Split Antarctic stage into readable chapters
         run: python scripts/split_antartida.py
+      - name: Enrich descriptions, photos and homepage
+        run: python scripts/enrich_site.py
       - name: Commit generated site
         run: |
           git config user.name "github-actions[bot]"
@@ -33,6 +36,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Genera bitácora cronológica y etapa antártica"
+            git commit -m "Enriquece bitácora con fotos y portada narrativa"
             git push origin HEAD:bitacora-cronologica
           fi
