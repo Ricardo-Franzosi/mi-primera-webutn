@@ -20,6 +20,8 @@ jobs:
           ref: bitacora-cronologica
       - name: Generate bitacora from Blogger
         run: python scripts/build_bitacora.py
+      - name: Apply verified editorial corrections
+        run: sed -i 's/Saccheri/Casciari/g; s/Sacheri/Casciari/g' pages/bitacora/la-previa.html
       - name: Commit generated site
         run: |
           git config user.name "github-actions[bot]"
